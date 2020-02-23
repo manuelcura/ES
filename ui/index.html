@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisador meteorológico por cidade</title>
+</head>
+<body>
+<form>
+    <label for="city">Cidade: </label>
+    <input type="text" id="city" name="city">
+</form>
+<button onclick="getAndDisplayInfo()">How's the weather?</button>
+<div id="info"></div>
+<script>
+    function getAndDisplayInfo() {
+        info = httpGet("http://localhost:8000/weather/search/" + document.getElementById("city").value)
+        document.getElementById("info").innerText = info;
+    }
+
+    function httpGet(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
+</script>
+</body>
+</html>

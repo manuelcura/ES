@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/weather")
 @Api(value = "Rest to retrieve weather information")
 @Log
@@ -21,6 +22,7 @@ public class WeatherController {
     WeatherService weatherService;
 
     @GetMapping("/search/{city}")
+    @CrossOrigin
     @ApiOperation(value = "Retrieve the current weather by city name", response = WeatherResponse.class)
     public ResponseEntity<WeatherResponse> getWheather(@PathVariable String city) {
 
