@@ -4,17 +4,38 @@
     <meta charset="UTF-8">
     <title>Pesquisador meteorológico por cidade</title>
 </head>
+<style>
+    p {
+  font-weight: bold;
+}
+
+span {
+  font-weight: normal;
+}
+
+</style>
 <body>
 <form>
     <label for="city">Cidade: </label>
     <input type="text" id="city" name="city">
 </form>
 <button onclick="getAndDisplayInfo()">How's the weather?</button>
-<div id="info"></div>
+<div id="info" style="display: none;">
+    <p>City: <span id="info_city"></span></p>
+    <p>Temperature: <span id="info_temp"></span></p>
+    <p>Max Temperature: <span id="info_max"></span></p>
+    <p>Min Temperature: <span id="info_min"></span></p>
+    <p>Description: <span id="info_description"></span></p>
+</div>
 <script>
     function getAndDisplayInfo() {
-        info = httpGet("http://localhost:8000/weather/search/" + document.getElementById("city").value)
-        document.getElementById("info").innerText = info;
+        info = JSON.parse(httpGet("http://localhost:8000/weather/search/" + document.getElementById("city").value))
+        document.getElementById("info_city").innerText = info["city"];
+        document.getElementById("info_temp").innerText = info["temp"];
+        document.getElementById("info_max").innerText = info["tempMin"];
+        document.getElementById("info_min").innerText = info["tempMax"];
+        document.getElementById("info_description").innerText = info["description"];
+        document.getElementById("info").style.display = "inline";
     }
 
     function httpGet(theUrl) {
