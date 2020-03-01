@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/weather")
@@ -26,7 +28,16 @@ public class WeatherController {
     @ApiOperation(value = "Retrieve the current weather by city name", response = WeatherResponse.class)
     public ResponseEntity<WeatherResponse> getWheather(@PathVariable String city) {
 
-        WeatherResponse weatherResponse = weatherService.getCityWheather(city);
+        WeatherResponse weatherResponse = weatherService.getCityWeather(city);
         return new ResponseEntity<WeatherResponse>(weatherResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/history/{city}")
+    @CrossOrigin
+    @ApiOperation(value = "Retrieve the current weather by city name", response = List.class)
+    public ResponseEntity<List<WeatherResponse>> getWeatherHistoryByCity(@PathVariable String city) {
+
+        List<WeatherResponse> weatherResponse = weatherService.getCityWeatherHistory(city);
+        return new ResponseEntity<List<WeatherResponse>>(weatherResponse, HttpStatus.OK);
     }
 }

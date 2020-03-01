@@ -8,9 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Artifact {
-    int cod;
-    int message;
-    int cnt;
     List<WeatherSpecification> list;
     City city;
 }
