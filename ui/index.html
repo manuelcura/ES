@@ -6,12 +6,12 @@
 </head>
 <style>
     p {
-  font-weight: bold;
-}
+        font-weight: bold;
+    }
 
-span {
-  font-weight: normal;
-}
+    span {
+        font-weight: normal;
+    }
 
 </style>
 <body>
@@ -27,6 +27,11 @@ span {
     <p>Min Temperature: <span id="info_min"></span></p>
     <p>Description: <span id="info_description"></span></p>
 </div>
+<div id="history">
+    <table style="width: 80%; align: center" id="table">
+
+    </table>
+</div>
 <script>
     function getAndDisplayInfo() {
         info = JSON.parse(httpGet("http://localhost:8000/weather/search/" + document.getElementById("city").value))
@@ -36,6 +41,20 @@ span {
         document.getElementById("info_min").innerText = info["tempMax"];
         document.getElementById("info_description").innerText = info["description"];
         document.getElementById("info").style.display = "inline";
+        document.getElementById("table").innerHTML = "<tr>\n" +
+            "            <th>Timestamp</th>\n" +
+            "            <th>Temperature</th>\n" +
+            "            <th>Min Temp</th>\n" +
+            "            <th>Max Temp</th>\n" +
+            "            <th>Description</th>\n" +
+            "        </tr>";
+
+        var history = JSON.parse(httpGet("http://localhost:8000/weather/search/history/" + document.getElementById("city").value));
+        console.log(history);
+        for (var object in history) {
+            console.log(history[object].currentRequestDate)
+            document.getElementById("table").innerHTML += "<tr align='center'><td>"+history[object].currentRequestDate+ "</td><td>" + history[object].temp+ "</td><td>" + history[object].tempMin+ "</td><td>"+ history[object].tempMax+ "</td><td>"+ history[object].description+ "</td></tr>";
+        }
     }
 
     function httpGet(theUrl) {
