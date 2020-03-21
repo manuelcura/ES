@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProfile name="default">
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+
+        <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>app.log</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <!-- each archived file, size max 10MB -->
+                <maxFileSize>10KB</maxFileSize>
+                <!-- total size of all archive files, if total size > 100GB, it will delete old archived file -->
+                <totalSizeCap>100KB</totalSizeCap>
+                <!-- 60 days to keep -->
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+
+<!--        <appender name="fast-kafka-appender" class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
+<!--            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--            </encoder>-->
+
+<!--            <topic>fast-logs</topic>-->
+<!--            <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />-->
+<!--            <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />-->
+
+<!--            <producerConfig>bootstrap.servers=localhost:9092</producerConfig>-->
+<!--            <producerConfig>acks=0</producerConfig>-->
+<!--            <producerConfig>linger.ms=100</producerConfig>-->
+<!--            <producerConfig>max.block.ms=100</producerConfig>-->
+<!--            <producerConfig>client.id=${HOSTNAME}-${CONTEXT_NAME}-logback-relaxed</producerConfig>-->
+
+<!--        </appender>-->
+
+<!--        <root level="info">-->
+<!--            <appender-ref ref="fast-kafka-appender" />-->
+<!--            <appender-ref ref="STDOUT"/>-->
+<!--        </root>-->
+
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.artifact.es" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="FILE-ROLLING"/>
+        </root>
+    </springProfile>
+
+</configuration>

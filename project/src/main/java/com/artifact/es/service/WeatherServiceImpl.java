@@ -1,10 +1,13 @@
 package com.artifact.es.service;
 
 import com.artifact.es.contants.Constants;
+import com.artifact.es.controller.WeatherController;
 import com.artifact.es.model.Artifact;
 import com.artifact.es.model.WeatherResponse;
 import com.artifact.es.repository.CityRepository;
 import com.artifact.es.repository.WeatherRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,12 @@ public class WeatherServiceImpl implements WeatherService {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
 
+    private static final Logger LOG = LoggerFactory.getLogger(WeatherServiceImpl.class);
+
+
     @Override
     public WeatherResponse getCityWeather(String cityName) {
+        LOG.debug("Requesting temperature information for: " + cityName);
         Artifact artifact = sendWeatherRequest(cityName);
         WeatherResponse weatherResponse = new WeatherResponse();
         weatherResponse.setCity(artifact.getCity().getName());
@@ -38,6 +45,7 @@ public class WeatherServiceImpl implements WeatherService {
         weatherResponse.setDescription(artifact.getList().get(0).getWeather().get(0).getDescription());
         weatherResponse.setCurrentRequestDate(sdf.format(new Date()));
         weatherRepository.save(weatherResponse);
+        LOG.debug("Persisting information: " + weatherResponse.toString());
         cityRepository.save(artifact.getCity());
         return weatherResponse;
     }
@@ -47,9 +55,16 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherRepository.findByCity(cityName);
     }
 
-    @Scheduled(fixedRate = 3600000)
+    //@Scheduled(fixedRate = 10000)
     private void saveWeatherRequests() {
+        LOG.debug("Scheduled activated");
         cityRepository.findAllDistinctCities().forEach(this::getCityWeather);
+    }
+
+    @Scheduled(fixedRate = 100)
+    private void imHere() {
+        LOG.debug("Scheduled activated: IM HERE!!!!");
+        //cityRepository.findAllDistinctCities().forEach(this::getCityWeather);
     }
 
     private double convertKelvinToCelsius(double tempInKelvin) {
@@ -57,6 +72,7 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     private Artifact sendWeatherRequest(String cityName) {
+        LOG.debug("Requesting external weather API (openweathermap) for information: " + cityName);
         String url = "http://api.openweathermap.org/data/2.5/forecast?q={city},pt&cnt=1&APPID={key}";
 
         //ObjectMapper objectMapper = new ObjectMapper();

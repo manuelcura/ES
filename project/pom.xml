@@ -17,6 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
         <org.slf4j.version>1.7.21</org.slf4j.version>
+        <org.apache.kafka>2.0.0</org.apache.kafka>
         <io.springfox.version>2.9.2</io.springfox.version>
         <com.fasterxml.jackson.core>2.9.8</com.fasterxml.jackson.core>
     </properties>
@@ -44,6 +45,27 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- kafka -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${org.apache.kafka}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.danielwegener</groupId>
+            <artifactId>logback-kafka-appender</artifactId>
+            <version>0.2.0-RC1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- logging -->
