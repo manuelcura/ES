@@ -72,7 +72,7 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     private Artifact sendWeatherRequest(String cityName) {
-        LOG.debug("Requesting external weather API (openweathermap) for information: " + cityName);
+        LOG.info("Requesting external weather API (openweathermap) for information: " + cityName);
         String url = "http://api.openweathermap.org/data/2.5/forecast?q={city},pt&cnt=1&APPID={key}";
 
         //ObjectMapper objectMapper = new ObjectMapper();

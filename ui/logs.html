@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs</title>
+</head>
+<body>
+<h1>Clearly not ELK stack</h1>
+<textarea type="text"  id="textArea" placeholder="Push Notifications..." rows="15" cols="60"></textarea>
+<script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+<script src="http://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script>
+$( window ).ready(function() {
+  connect();
+});
+
+function connect() {
+  var socket = new SockJS('http://localhost:8000/websocket');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+      stompClient.subscribe('/topic/pushNotification', function (notification) {
+          $('#textArea').val(notification);
+       });
+  });
+}</script>
+</body>
+</html>
