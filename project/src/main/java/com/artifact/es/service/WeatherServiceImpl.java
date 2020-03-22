@@ -35,7 +35,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Override
     public WeatherResponse getCityWeather(String cityName) {
-        LOG.debug("Requesting temperature information for: " + cityName);
+        LOG.info("Requesting temperature information for: " + cityName);
         Artifact artifact = sendWeatherRequest(cityName);
         WeatherResponse weatherResponse = new WeatherResponse();
         weatherResponse.setCity(artifact.getCity().getName());
@@ -45,7 +45,7 @@ public class WeatherServiceImpl implements WeatherService {
         weatherResponse.setDescription(artifact.getList().get(0).getWeather().get(0).getDescription());
         weatherResponse.setCurrentRequestDate(sdf.format(new Date()));
         weatherRepository.save(weatherResponse);
-        LOG.debug("Persisting information: " + weatherResponse.toString());
+        LOG.info("Persisting information: " + weatherResponse.toString());
         cityRepository.save(artifact.getCity());
         return weatherResponse;
     }
@@ -55,13 +55,13 @@ public class WeatherServiceImpl implements WeatherService {
         return weatherRepository.findByCity(cityName);
     }
 
-    //@Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000)
     private void saveWeatherRequests() {
-        LOG.debug("Scheduled activated");
+        LOG.info("Scheduled activated");
         cityRepository.findAllDistinctCities().forEach(this::getCityWeather);
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     private void imHere() {
         LOG.info("Scheduled activated: IM HERE!!!!");
         //cityRepository.findAllDistinctCities().forEach(this::getCityWeather);

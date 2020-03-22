@@ -30,7 +30,7 @@ public class WeatherController {
     @CrossOrigin
     @ApiOperation(value = "Retrieve the current weather by city name", response = WeatherResponse.class)
     public ResponseEntity<WeatherResponse> getWheather(@PathVariable String city) {
-        LOG.debug("Requesting weather for city: " + city);
+        LOG.info("Requesting weather for city: " + city);
         WeatherResponse weatherResponse = weatherService.getCityWeather(city);
         return new ResponseEntity<WeatherResponse>(weatherResponse, HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class WeatherController {
     @CrossOrigin
     @ApiOperation(value = "Retrieve the current weather by city name", response = List.class)
     public ResponseEntity<List<WeatherResponse>> getWeatherHistoryByCity(@PathVariable String city) {
-        LOG.debug("Requesting weather history for city: " + city);
+        LOG.info("Requesting weather history for city: " + city);
         List<WeatherResponse> weatherResponse = weatherService.getCityWeatherHistory(city);
         return new ResponseEntity<List<WeatherResponse>>(weatherResponse, HttpStatus.OK);
     }

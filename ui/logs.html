@@ -5,8 +5,12 @@
     <title>Logs</title>
 </head>
 <body>
-<h1>Clearly not ELK stack</h1>
-<textarea type="text"  id="textArea" placeholder="Push Notifications..." rows="15" cols="60"></textarea>
+<h1 align="center" >Clearly not Kibana</h1>
+<div id="history">
+    <table style="width: 80%; align: center" id="table">
+
+    </table>
+</div>
 <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
 <script src="http://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
@@ -20,7 +24,9 @@ function connect() {
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
       stompClient.subscribe('/topic/pushNotification', function (notification) {
-          $('#textArea').val(notification);
+			console.log(notification);
+		  var newline = "<tr align='left'><td> " + notification.body + "</td></tr>"
+          $('#table').append(newline);
        });
   });
 }</script>
