@@ -1,0 +1,25 @@
+version: '3.2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - 9094:9094
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://localhost:9094
+      KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://0.0.0.0:9094
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: labes
+      POSTGRES_PASSWORD: labes
+  spring:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
