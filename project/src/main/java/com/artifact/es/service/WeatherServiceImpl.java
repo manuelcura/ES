@@ -61,9 +61,9 @@ public class WeatherServiceImpl implements WeatherService {
         cityRepository.findAllDistinctCities().forEach(this::getCityWeather);
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 5000)
     private void imHere() {
-        LOG.debug("Scheduled activated: IM HERE!!!!");
+        LOG.info("Scheduled activated: IM HERE!!!!");
         //cityRepository.findAllDistinctCities().forEach(this::getCityWeather);
     }
 
