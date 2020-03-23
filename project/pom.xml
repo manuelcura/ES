@@ -19,7 +19,7 @@
         <org.slf4j.version>1.7.21</org.slf4j.version>
         <org.apache.kafka>2.0.0</org.apache.kafka>
         <io.springfox.version>2.9.2</io.springfox.version>
-        <com.fasterxml.jackson.core>2.9.8</com.fasterxml.jackson.core>
+        <com.fasterxml.jackson.core>2.9.10.3</com.fasterxml.jackson.core>
     </properties>
 
     <dependencies>
