@@ -11,14 +11,13 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Listener {
+public class ListenerUpdates {
 
     @Autowired
     private SimpMessagingTemplate template;
-
-    @StreamListener(target = "inbound")
-    public void processMessage(String pushMessage){
-        this.template.convertAndSend("/topic/pushNotification", pushMessage);
-    }
     
+    @StreamListener(target = "updates")
+    public void processMessage(String pushMessage){
+        this.template.convertAndSend("/topic/updates", pushMessage);
+    }
 }

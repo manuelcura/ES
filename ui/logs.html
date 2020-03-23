@@ -5,11 +5,20 @@
     <title>Logs</title>
 </head>
 <body>
-<h1 align="center" >Clearly not Kibana</h1>
-<div id="history">
-    <table style="width: 80%; align: center" id="table">
+<h1 align="center" >Clearly not ELK Stack</h1>
+<div id="history" class="row">
+	<h2>Logs</h2>
+	<div class="col-lg-6 col-md-6" >
+		<table id="table">
 
-    </table>
+		</table>
+	</div>
+	<h2>Events</h2>
+    <div class="col-lg-6 col-md-6" >
+		<table id="table2">
+
+		</table>
+	</div>
 </div>
 <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
 <script src="http://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -18,15 +27,28 @@
 $( window ).ready(function() {
   connect();
 });
-
+$( window ).ready(function() {
+  connect2();
+});
 function connect() {
   var socket = new SockJS('http://localhost:8000/websocket');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function (frame) {
       stompClient.subscribe('/topic/pushNotification', function (notification) {
 			console.log(notification);
-		  var newline = "<tr align='left'><td> " + notification.body + "</td></tr>"
+		  var newline = "<tr ><td> " + notification.body + "</td></tr>"
           $('#table').append(newline);
+       });
+  });
+}
+function connect2() {
+  var socket = new SockJS('http://localhost:8000/websocket');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+      stompClient.subscribe('/topic/updates', function (notification) {
+			console.log(notification);
+		  var newline = "<tr><td> " + notification.body + "</td></tr>"
+          $('#table2').append(newline);
        });
   });
 }</script>

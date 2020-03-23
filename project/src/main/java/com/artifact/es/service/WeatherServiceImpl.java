@@ -31,7 +31,12 @@ public class WeatherServiceImpl implements WeatherService {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSS");
 
     private static final Logger LOG = LoggerFactory.getLogger(WeatherServiceImpl.class);
+    
+    private WeatherProducer simpleProducer;
 
+    public WeatherServiceImpl(WeatherProducer simpleProducer) {
+        this.simpleProducer = simpleProducer;
+    }
 
     @Override
     public WeatherResponse getCityWeather(String cityName) {
@@ -45,6 +50,7 @@ public class WeatherServiceImpl implements WeatherService {
         weatherResponse.setDescription(artifact.getList().get(0).getWeather().get(0).getDescription());
         weatherResponse.setCurrentRequestDate(sdf.format(new Date()));
         weatherRepository.save(weatherResponse);
+        simpleProducer.send("", weatherResponse.toString());
         LOG.info("Persisting information: " + weatherResponse.toString());
         cityRepository.save(artifact.getCity());
         return weatherResponse;
@@ -76,13 +82,11 @@ public class WeatherServiceImpl implements WeatherService {
         String url = "http://api.openweathermap.org/data/2.5/forecast?q={city},pt&cnt=1&APPID={key}";
 
         //ObjectMapper objectMapper = new ObjectMapper();
-
         return template.getForObject(url, Artifact.class, cityName, Constants.WHEATHER_API_KEY);
 
         // Can be used to filter information inside the JSON, there is no need to retrieve all
         // JsonNode jsonNode = objectMapper.readTree(json);
         // String color = jsonNode.get("color").asText();
     }
-
 
 }

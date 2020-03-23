@@ -12,5 +12,8 @@ public interface IBrokerChannel {
 
     @Input("inbound")
     SubscribableChannel inbound();
+    
+    @Input("updates")
+    SubscribableChannel updates();
 
 }
